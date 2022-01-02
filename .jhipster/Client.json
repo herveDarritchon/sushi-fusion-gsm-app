@@ -1,0 +1,38 @@
+{
+  "name": "Client",
+  "fields": [
+    {
+      "fieldName": "nom",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "adresse",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "ClientEnum",
+      "fieldValues": "GMS,ATELIER,DETAILLANT"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "utilisateur",
+      "otherEntityRelationshipName": "client",
+      "relationshipName": "vendeur",
+      "ownerSide": true
+    }
+  ],
+  "entityTableName": "client",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20220102220301"
+}
