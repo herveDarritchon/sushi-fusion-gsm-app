@@ -42,7 +42,9 @@
     "clientTheme": "none",
     "clientThemeVariant": "",
     "reactive": false,
-    "enableGradleEnterprise": false
+    "enableGradleEnterprise": false,
+    "entities": ["Client", "Produit", "Element", "Utilisateur"],
+    "lastLiquibaseTimestamp": 1641160984000
   },
   "git-provider": "GitHub",
   "git-company": "herveDarritchon",
