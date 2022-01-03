@@ -30,6 +30,9 @@
             <th scope="row"><span>ID</span></th>
             <th scope="row"><span>Nom</span></th>
             <th scope="row"><span>Role</span></th>
+            <th scope="row"><span>Created Date</span></th>
+            <th scope="row"><span>Start Date</span></th>
+            <th scope="row"><span>End Date</span></th>
             <th scope="row"></th>
           </tr>
         </thead>
@@ -40,6 +43,9 @@
             </td>
             <td>{{ utilisateur.nom }}</td>
             <td>{{ utilisateur.role }}</td>
+            <td>{{ utilisateur.createdDate }}</td>
+            <td>{{ utilisateur.startDate }}</td>
+            <td>{{ utilisateur.endDate }}</td>
             <td class="text-right">
               <div class="btn-group">
                 <router-link :to="{ name: 'UtilisateurView', params: { utilisateurId: utilisateur.id } }" custom v-slot="{ navigate }">

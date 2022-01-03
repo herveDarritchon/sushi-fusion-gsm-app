@@ -23,12 +23,30 @@
             <span>{{ client.type }}</span>
           </dd>
           <dt>
-            <span>Vendeur</span>
+            <span>Created Date</span>
           </dt>
           <dd>
-            <div v-if="client.vendeur">
-              <router-link :to="{ name: 'UtilisateurView', params: { utilisateurId: client.vendeur.id } }">{{
-                client.vendeur.id
+            <span>{{ client.createdDate }}</span>
+          </dd>
+          <dt>
+            <span>Start Date</span>
+          </dt>
+          <dd>
+            <span>{{ client.startDate }}</span>
+          </dd>
+          <dt>
+            <span>End Date</span>
+          </dt>
+          <dd>
+            <span>{{ client.endDate }}</span>
+          </dd>
+          <dt>
+            <span>Utilisateur</span>
+          </dt>
+          <dd>
+            <div v-if="client.utilisateur">
+              <router-link :to="{ name: 'UtilisateurView', params: { utilisateurId: client.utilisateur.id } }">{{
+                client.utilisateur.id
               }}</router-link>
             </div>
           </dd>

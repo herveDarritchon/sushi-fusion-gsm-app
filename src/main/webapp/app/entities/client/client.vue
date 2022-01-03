@@ -31,7 +31,10 @@
             <th scope="row"><span>Nom</span></th>
             <th scope="row"><span>Adresse</span></th>
             <th scope="row"><span>Type</span></th>
-            <th scope="row"><span>Vendeur</span></th>
+            <th scope="row"><span>Created Date</span></th>
+            <th scope="row"><span>Start Date</span></th>
+            <th scope="row"><span>End Date</span></th>
+            <th scope="row"><span>Utilisateur</span></th>
             <th scope="row"></th>
           </tr>
         </thead>
@@ -43,10 +46,13 @@
             <td>{{ client.nom }}</td>
             <td>{{ client.adresse }}</td>
             <td>{{ client.type }}</td>
+            <td>{{ client.createdDate }}</td>
+            <td>{{ client.startDate }}</td>
+            <td>{{ client.endDate }}</td>
             <td>
-              <div v-if="client.vendeur">
-                <router-link :to="{ name: 'UtilisateurView', params: { utilisateurId: client.vendeur.id } }">{{
-                  client.vendeur.id
+              <div v-if="client.utilisateur">
+                <router-link :to="{ name: 'UtilisateurView', params: { utilisateurId: client.utilisateur.id } }">{{
+                  client.utilisateur.id
                 }}</router-link>
               </div>
             </td>

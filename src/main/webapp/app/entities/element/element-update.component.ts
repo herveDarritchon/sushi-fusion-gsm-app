@@ -15,6 +15,9 @@ const validations: any = {
     nom: {
       required,
     },
+    createdDate: {},
+    startDate: {},
+    endDate: {},
   },
 };
 
@@ -50,6 +53,7 @@ export default class ElementUpdate extends Vue {
         this.currentLanguage = this.$store.getters.currentLanguage;
       }
     );
+    this.element.produits = [];
   }
 
   public save(): void {
@@ -116,5 +120,12 @@ export default class ElementUpdate extends Vue {
       .then(res => {
         this.produits = res.data;
       });
+  }
+
+  public getSelected(selectedVals, option): any {
+    if (selectedVals) {
+      return selectedVals.find(value => option.id === value.id) ?? option;
+    }
+    return option;
   }
 }

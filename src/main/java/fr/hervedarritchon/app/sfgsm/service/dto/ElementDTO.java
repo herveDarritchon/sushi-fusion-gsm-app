@@ -1,7 +1,10 @@
 package fr.hervedarritchon.app.sfgsm.service.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.validation.constraints.*;
 
 /**
@@ -13,6 +16,14 @@ public class ElementDTO implements Serializable {
 
     @NotNull
     private String nom;
+
+    private LocalDate createdDate;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
+    private Set<ProduitDTO> produits = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -28,6 +39,38 @@ public class ElementDTO implements Serializable {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public Set<ProduitDTO> getProduits() {
+        return produits;
+    }
+
+    public void setProduits(Set<ProduitDTO> produits) {
+        this.produits = produits;
     }
 
     @Override
@@ -57,6 +100,10 @@ public class ElementDTO implements Serializable {
         return "ElementDTO{" +
             "id=" + getId() +
             ", nom='" + getNom() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
+            ", produits=" + getProduits() +
             "}";
     }
 }

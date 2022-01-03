@@ -16,6 +16,24 @@
           <dd>
             <span>{{ utilisateur.role }}</span>
           </dd>
+          <dt>
+            <span>Created Date</span>
+          </dt>
+          <dd>
+            <span>{{ utilisateur.createdDate }}</span>
+          </dd>
+          <dt>
+            <span>Start Date</span>
+          </dt>
+          <dd>
+            <span>{{ utilisateur.startDate }}</span>
+          </dd>
+          <dt>
+            <span>End Date</span>
+          </dt>
+          <dd>
+            <span>{{ utilisateur.endDate }}</span>
+          </dd>
         </dl>
         <button type="submit" v-on:click.prevent="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
           <font-awesome-icon icon="arrow-left"></font-awesome-icon>&nbsp;<span> Back</span>

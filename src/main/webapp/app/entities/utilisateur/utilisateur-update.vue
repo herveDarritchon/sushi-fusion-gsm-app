@@ -43,6 +43,90 @@
               <small class="form-text text-danger" v-if="!$v.utilisateur.role.required"> This field is required. </small>
             </div>
           </div>
+          <div class="form-group">
+            <label class="form-control-label" for="utilisateur-createdDate">Created Date</label>
+            <b-input-group class="mb-3">
+              <b-input-group-prepend>
+                <b-form-datepicker
+                  aria-controls="utilisateur-createdDate"
+                  v-model="$v.utilisateur.createdDate.$model"
+                  name="createdDate"
+                  class="form-control"
+                  :locale="currentLanguage"
+                  button-only
+                  today-button
+                  reset-button
+                  close-button
+                >
+                </b-form-datepicker>
+              </b-input-group-prepend>
+              <b-form-input
+                id="utilisateur-createdDate"
+                data-cy="createdDate"
+                type="text"
+                class="form-control"
+                name="createdDate"
+                :class="{ valid: !$v.utilisateur.createdDate.$invalid, invalid: $v.utilisateur.createdDate.$invalid }"
+                v-model="$v.utilisateur.createdDate.$model"
+              />
+            </b-input-group>
+          </div>
+          <div class="form-group">
+            <label class="form-control-label" for="utilisateur-startDate">Start Date</label>
+            <b-input-group class="mb-3">
+              <b-input-group-prepend>
+                <b-form-datepicker
+                  aria-controls="utilisateur-startDate"
+                  v-model="$v.utilisateur.startDate.$model"
+                  name="startDate"
+                  class="form-control"
+                  :locale="currentLanguage"
+                  button-only
+                  today-button
+                  reset-button
+                  close-button
+                >
+                </b-form-datepicker>
+              </b-input-group-prepend>
+              <b-form-input
+                id="utilisateur-startDate"
+                data-cy="startDate"
+                type="text"
+                class="form-control"
+                name="startDate"
+                :class="{ valid: !$v.utilisateur.startDate.$invalid, invalid: $v.utilisateur.startDate.$invalid }"
+                v-model="$v.utilisateur.startDate.$model"
+              />
+            </b-input-group>
+          </div>
+          <div class="form-group">
+            <label class="form-control-label" for="utilisateur-endDate">End Date</label>
+            <b-input-group class="mb-3">
+              <b-input-group-prepend>
+                <b-form-datepicker
+                  aria-controls="utilisateur-endDate"
+                  v-model="$v.utilisateur.endDate.$model"
+                  name="endDate"
+                  class="form-control"
+                  :locale="currentLanguage"
+                  button-only
+                  today-button
+                  reset-button
+                  close-button
+                >
+                </b-form-datepicker>
+              </b-input-group-prepend>
+              <b-form-input
+                id="utilisateur-endDate"
+                data-cy="endDate"
+                type="text"
+                class="form-control"
+                name="endDate"
+                :class="{ valid: !$v.utilisateur.endDate.$invalid, invalid: $v.utilisateur.endDate.$invalid }"
+                v-model="$v.utilisateur.endDate.$model"
+              />
+            </b-input-group>
+          </div>
         </div>
         <div>
           <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" v-on:click="previousState()">

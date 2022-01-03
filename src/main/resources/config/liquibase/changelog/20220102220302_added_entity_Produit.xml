@@ -23,7 +23,13 @@
             <column name="prix" type="integer">
                 <constraints nullable="true" />
             </column>
-            <column name="ingredient_id" type="bigint">
+            <column name="created_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="start_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="end_date" type="date">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -50,6 +56,9 @@
             <column name="reference" type="string"/>
             <column name="nom" type="string"/>
             <column name="prix" type="numeric"/>
+            <column name="created_date" type="date"/>
+            <column name="start_date" type="date"/>
+            <column name="end_date" type="date"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

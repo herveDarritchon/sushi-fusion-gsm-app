@@ -5,14 +5,27 @@
       "fieldName": "nom",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "startDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "endDate",
+      "fieldType": "LocalDate"
     }
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-many",
+      "relationshipType": "many-to-many",
       "otherEntityName": "produit",
       "otherEntityRelationshipName": "ingredient",
-      "relationshipName": "produit"
+      "relationshipName": "produit",
+      "ownerSide": true
     }
   ],
   "entityTableName": "element",

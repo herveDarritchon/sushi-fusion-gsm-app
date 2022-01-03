@@ -11,6 +11,8 @@ import fr.hervedarritchon.app.sfgsm.domain.enumeration.ClientEnum;
 import fr.hervedarritchon.app.sfgsm.repository.ClientRepository;
 import fr.hervedarritchon.app.sfgsm.service.dto.ClientDTO;
 import fr.hervedarritchon.app.sfgsm.service.mapper.ClientMapper;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -41,6 +43,15 @@ class ClientResourceIT {
     private static final ClientEnum DEFAULT_TYPE = ClientEnum.GMS;
     private static final ClientEnum UPDATED_TYPE = ClientEnum.ATELIER;
 
+    private static final LocalDate DEFAULT_CREATED_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_CREATED_DATE = LocalDate.now(ZoneId.systemDefault());
+
+    private static final LocalDate DEFAULT_START_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_START_DATE = LocalDate.now(ZoneId.systemDefault());
+
+    private static final LocalDate DEFAULT_END_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_END_DATE = LocalDate.now(ZoneId.systemDefault());
+
     private static final String ENTITY_API_URL = "/api/clients";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -68,7 +79,13 @@ class ClientResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Client createEntity(EntityManager em) {
-        Client client = new Client().nom(DEFAULT_NOM).adresse(DEFAULT_ADRESSE).type(DEFAULT_TYPE);
+        Client client = new Client()
+            .nom(DEFAULT_NOM)
+            .adresse(DEFAULT_ADRESSE)
+            .type(DEFAULT_TYPE)
+            .createdDate(DEFAULT_CREATED_DATE)
+            .startDate(DEFAULT_START_DATE)
+            .endDate(DEFAULT_END_DATE);
         return client;
     }
 
@@ -79,7 +96,13 @@ class ClientResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Client createUpdatedEntity(EntityManager em) {
-        Client client = new Client().nom(UPDATED_NOM).adresse(UPDATED_ADRESSE).type(UPDATED_TYPE);
+        Client client = new Client()
+            .nom(UPDATED_NOM)
+            .adresse(UPDATED_ADRESSE)
+            .type(UPDATED_TYPE)
+            .createdDate(UPDATED_CREATED_DATE)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE);
         return client;
     }
 
@@ -105,6 +128,9 @@ class ClientResourceIT {
         assertThat(testClient.getNom()).isEqualTo(DEFAULT_NOM);
         assertThat(testClient.getAdresse()).isEqualTo(DEFAULT_ADRESSE);
         assertThat(testClient.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testClient.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
+        assertThat(testClient.getStartDate()).isEqualTo(DEFAULT_START_DATE);
+        assertThat(testClient.getEndDate()).isEqualTo(DEFAULT_END_DATE);
     }
 
     @Test
@@ -158,7 +184,10 @@ class ClientResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(client.getId().intValue())))
             .andExpect(jsonPath("$.[*].nom").value(hasItem(DEFAULT_NOM)))
             .andExpect(jsonPath("$.[*].adresse").value(hasItem(DEFAULT_ADRESSE)))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
+            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
+            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())));
     }
 
     @Test
@@ -175,7 +204,10 @@ class ClientResourceIT {
             .andExpect(jsonPath("$.id").value(client.getId().intValue()))
             .andExpect(jsonPath("$.nom").value(DEFAULT_NOM))
             .andExpect(jsonPath("$.adresse").value(DEFAULT_ADRESSE))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
+            .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()))
+            .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
+            .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()));
     }
 
     @Test
@@ -197,7 +229,13 @@ class ClientResourceIT {
         Client updatedClient = clientRepository.findById(client.getId()).get();
         // Disconnect from session so that the updates on updatedClient are not directly saved in db
         em.detach(updatedClient);
-        updatedClient.nom(UPDATED_NOM).adresse(UPDATED_ADRESSE).type(UPDATED_TYPE);
+        updatedClient
+            .nom(UPDATED_NOM)
+            .adresse(UPDATED_ADRESSE)
+            .type(UPDATED_TYPE)
+            .createdDate(UPDATED_CREATED_DATE)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE);
         ClientDTO clientDTO = clientMapper.toDto(updatedClient);
 
         restClientMockMvc
@@ -215,6 +253,9 @@ class ClientResourceIT {
         assertThat(testClient.getNom()).isEqualTo(UPDATED_NOM);
         assertThat(testClient.getAdresse()).isEqualTo(UPDATED_ADRESSE);
         assertThat(testClient.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testClient.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
+        assertThat(testClient.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testClient.getEndDate()).isEqualTo(UPDATED_END_DATE);
     }
 
     @Test
@@ -311,6 +352,9 @@ class ClientResourceIT {
         assertThat(testClient.getNom()).isEqualTo(UPDATED_NOM);
         assertThat(testClient.getAdresse()).isEqualTo(UPDATED_ADRESSE);
         assertThat(testClient.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testClient.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
+        assertThat(testClient.getStartDate()).isEqualTo(DEFAULT_START_DATE);
+        assertThat(testClient.getEndDate()).isEqualTo(DEFAULT_END_DATE);
     }
 
     @Test
@@ -325,7 +369,13 @@ class ClientResourceIT {
         Client partialUpdatedClient = new Client();
         partialUpdatedClient.setId(client.getId());
 
-        partialUpdatedClient.nom(UPDATED_NOM).adresse(UPDATED_ADRESSE).type(UPDATED_TYPE);
+        partialUpdatedClient
+            .nom(UPDATED_NOM)
+            .adresse(UPDATED_ADRESSE)
+            .type(UPDATED_TYPE)
+            .createdDate(UPDATED_CREATED_DATE)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE);
 
         restClientMockMvc
             .perform(
@@ -342,6 +392,9 @@ class ClientResourceIT {
         assertThat(testClient.getNom()).isEqualTo(UPDATED_NOM);
         assertThat(testClient.getAdresse()).isEqualTo(UPDATED_ADRESSE);
         assertThat(testClient.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testClient.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
+        assertThat(testClient.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testClient.getEndDate()).isEqualTo(UPDATED_END_DATE);
     }
 
     @Test

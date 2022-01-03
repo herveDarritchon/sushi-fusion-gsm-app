@@ -10,6 +10,33 @@
           <dd>
             <span>{{ element.nom }}</span>
           </dd>
+          <dt>
+            <span>Created Date</span>
+          </dt>
+          <dd>
+            <span>{{ element.createdDate }}</span>
+          </dd>
+          <dt>
+            <span>Start Date</span>
+          </dt>
+          <dd>
+            <span>{{ element.startDate }}</span>
+          </dd>
+          <dt>
+            <span>End Date</span>
+          </dt>
+          <dd>
+            <span>{{ element.endDate }}</span>
+          </dd>
+          <dt>
+            <span>Produit</span>
+          </dt>
+          <dd>
+            <span v-for="(produit, i) in element.produits" :key="produit.id"
+              >{{ i > 0 ? ', ' : '' }}
+              <router-link :to="{ name: 'ProduitView', params: { produitId: produit.id } }">{{ produit.id }}</router-link>
+            </span>
+          </dd>
         </dl>
         <button type="submit" v-on:click.prevent="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
           <font-awesome-icon icon="arrow-left"></font-awesome-icon>&nbsp;<span> Back</span>

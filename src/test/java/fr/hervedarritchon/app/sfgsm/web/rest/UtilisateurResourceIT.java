@@ -11,6 +11,8 @@ import fr.hervedarritchon.app.sfgsm.domain.enumeration.RoleEnum;
 import fr.hervedarritchon.app.sfgsm.repository.UtilisateurRepository;
 import fr.hervedarritchon.app.sfgsm.service.dto.UtilisateurDTO;
 import fr.hervedarritchon.app.sfgsm.service.mapper.UtilisateurMapper;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -37,6 +39,15 @@ class UtilisateurResourceIT {
 
     private static final RoleEnum DEFAULT_ROLE = RoleEnum.VENDEUR;
     private static final RoleEnum UPDATED_ROLE = RoleEnum.ADMIN;
+
+    private static final LocalDate DEFAULT_CREATED_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_CREATED_DATE = LocalDate.now(ZoneId.systemDefault());
+
+    private static final LocalDate DEFAULT_START_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_START_DATE = LocalDate.now(ZoneId.systemDefault());
+
+    private static final LocalDate DEFAULT_END_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_END_DATE = LocalDate.now(ZoneId.systemDefault());
 
     private static final String ENTITY_API_URL = "/api/utilisateurs";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -65,7 +76,12 @@ class UtilisateurResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Utilisateur createEntity(EntityManager em) {
-        Utilisateur utilisateur = new Utilisateur().nom(DEFAULT_NOM).role(DEFAULT_ROLE);
+        Utilisateur utilisateur = new Utilisateur()
+            .nom(DEFAULT_NOM)
+            .role(DEFAULT_ROLE)
+            .createdDate(DEFAULT_CREATED_DATE)
+            .startDate(DEFAULT_START_DATE)
+            .endDate(DEFAULT_END_DATE);
         return utilisateur;
     }
 
@@ -76,7 +92,12 @@ class UtilisateurResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Utilisateur createUpdatedEntity(EntityManager em) {
-        Utilisateur utilisateur = new Utilisateur().nom(UPDATED_NOM).role(UPDATED_ROLE);
+        Utilisateur utilisateur = new Utilisateur()
+            .nom(UPDATED_NOM)
+            .role(UPDATED_ROLE)
+            .createdDate(UPDATED_CREATED_DATE)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE);
         return utilisateur;
     }
 
@@ -103,6 +124,9 @@ class UtilisateurResourceIT {
         Utilisateur testUtilisateur = utilisateurList.get(utilisateurList.size() - 1);
         assertThat(testUtilisateur.getNom()).isEqualTo(DEFAULT_NOM);
         assertThat(testUtilisateur.getRole()).isEqualTo(DEFAULT_ROLE);
+        assertThat(testUtilisateur.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
+        assertThat(testUtilisateur.getStartDate()).isEqualTo(DEFAULT_START_DATE);
+        assertThat(testUtilisateur.getEndDate()).isEqualTo(DEFAULT_END_DATE);
     }
 
     @Test
@@ -179,7 +203,10 @@ class UtilisateurResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(utilisateur.getId().intValue())))
             .andExpect(jsonPath("$.[*].nom").value(hasItem(DEFAULT_NOM)))
-            .andExpect(jsonPath("$.[*].role").value(hasItem(DEFAULT_ROLE.toString())));
+            .andExpect(jsonPath("$.[*].role").value(hasItem(DEFAULT_ROLE.toString())))
+            .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
+            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
+            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())));
     }
 
     @Test
@@ -195,7 +222,10 @@ class UtilisateurResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(utilisateur.getId().intValue()))
             .andExpect(jsonPath("$.nom").value(DEFAULT_NOM))
-            .andExpect(jsonPath("$.role").value(DEFAULT_ROLE.toString()));
+            .andExpect(jsonPath("$.role").value(DEFAULT_ROLE.toString()))
+            .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()))
+            .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
+            .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()));
     }
 
     @Test
@@ -217,7 +247,12 @@ class UtilisateurResourceIT {
         Utilisateur updatedUtilisateur = utilisateurRepository.findById(utilisateur.getId()).get();
         // Disconnect from session so that the updates on updatedUtilisateur are not directly saved in db
         em.detach(updatedUtilisateur);
-        updatedUtilisateur.nom(UPDATED_NOM).role(UPDATED_ROLE);
+        updatedUtilisateur
+            .nom(UPDATED_NOM)
+            .role(UPDATED_ROLE)
+            .createdDate(UPDATED_CREATED_DATE)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE);
         UtilisateurDTO utilisateurDTO = utilisateurMapper.toDto(updatedUtilisateur);
 
         restUtilisateurMockMvc
@@ -234,6 +269,9 @@ class UtilisateurResourceIT {
         Utilisateur testUtilisateur = utilisateurList.get(utilisateurList.size() - 1);
         assertThat(testUtilisateur.getNom()).isEqualTo(UPDATED_NOM);
         assertThat(testUtilisateur.getRole()).isEqualTo(UPDATED_ROLE);
+        assertThat(testUtilisateur.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
+        assertThat(testUtilisateur.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testUtilisateur.getEndDate()).isEqualTo(UPDATED_END_DATE);
     }
 
     @Test
@@ -313,7 +351,7 @@ class UtilisateurResourceIT {
         Utilisateur partialUpdatedUtilisateur = new Utilisateur();
         partialUpdatedUtilisateur.setId(utilisateur.getId());
 
-        partialUpdatedUtilisateur.nom(UPDATED_NOM);
+        partialUpdatedUtilisateur.nom(UPDATED_NOM).startDate(UPDATED_START_DATE);
 
         restUtilisateurMockMvc
             .perform(
@@ -329,6 +367,9 @@ class UtilisateurResourceIT {
         Utilisateur testUtilisateur = utilisateurList.get(utilisateurList.size() - 1);
         assertThat(testUtilisateur.getNom()).isEqualTo(UPDATED_NOM);
         assertThat(testUtilisateur.getRole()).isEqualTo(DEFAULT_ROLE);
+        assertThat(testUtilisateur.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
+        assertThat(testUtilisateur.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testUtilisateur.getEndDate()).isEqualTo(DEFAULT_END_DATE);
     }
 
     @Test
@@ -343,7 +384,12 @@ class UtilisateurResourceIT {
         Utilisateur partialUpdatedUtilisateur = new Utilisateur();
         partialUpdatedUtilisateur.setId(utilisateur.getId());
 
-        partialUpdatedUtilisateur.nom(UPDATED_NOM).role(UPDATED_ROLE);
+        partialUpdatedUtilisateur
+            .nom(UPDATED_NOM)
+            .role(UPDATED_ROLE)
+            .createdDate(UPDATED_CREATED_DATE)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE);
 
         restUtilisateurMockMvc
             .perform(
@@ -359,6 +405,9 @@ class UtilisateurResourceIT {
         Utilisateur testUtilisateur = utilisateurList.get(utilisateurList.size() - 1);
         assertThat(testUtilisateur.getNom()).isEqualTo(UPDATED_NOM);
         assertThat(testUtilisateur.getRole()).isEqualTo(UPDATED_ROLE);
+        assertThat(testUtilisateur.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
+        assertThat(testUtilisateur.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testUtilisateur.getEndDate()).isEqualTo(UPDATED_END_DATE);
     }
 
     @Test

@@ -23,14 +23,22 @@
             <span>{{ produit.prix }}</span>
           </dd>
           <dt>
-            <span>Ingredient</span>
+            <span>Created Date</span>
           </dt>
           <dd>
-            <div v-if="produit.ingredient">
-              <router-link :to="{ name: 'ElementView', params: { elementId: produit.ingredient.id } }">{{
-                produit.ingredient.nombre
-              }}</router-link>
-            </div>
+            <span>{{ produit.createdDate }}</span>
+          </dd>
+          <dt>
+            <span>Start Date</span>
+          </dt>
+          <dd>
+            <span>{{ produit.startDate }}</span>
+          </dd>
+          <dt>
+            <span>End Date</span>
+          </dt>
+          <dd>
+            <span>{{ produit.endDate }}</span>
           </dd>
         </dl>
         <button type="submit" v-on:click.prevent="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

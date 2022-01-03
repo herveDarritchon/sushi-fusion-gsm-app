@@ -33,6 +33,18 @@
             <th scope="row" v-on:click="changeOrder('nom')">
               <span>Nom</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'nom'"></jhi-sort-indicator>
             </th>
+            <th scope="row" v-on:click="changeOrder('createdDate')">
+              <span>Created Date</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'createdDate'"></jhi-sort-indicator>
+            </th>
+            <th scope="row" v-on:click="changeOrder('startDate')">
+              <span>Start Date</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'startDate'"></jhi-sort-indicator>
+            </th>
+            <th scope="row" v-on:click="changeOrder('endDate')">
+              <span>End Date</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'endDate'"></jhi-sort-indicator>
+            </th>
             <th scope="row"></th>
           </tr>
         </thead>
@@ -42,6 +54,9 @@
               <router-link :to="{ name: 'ElementView', params: { elementId: element.id } }">{{ element.id }}</router-link>
             </td>
             <td>{{ element.nom }}</td>
+            <td>{{ element.createdDate }}</td>
+            <td>{{ element.startDate }}</td>
+            <td>{{ element.endDate }}</td>
             <td class="text-right">
               <div class="btn-group">
                 <router-link :to="{ name: 'ElementView', params: { elementId: element.id } }" custom v-slot="{ navigate }">

@@ -13,15 +13,27 @@
     {
       "fieldName": "prix",
       "fieldType": "Integer"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "startDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "endDate",
+      "fieldType": "LocalDate"
     }
   ],
   "relationships": [
     {
-      "relationshipType": "many-to-one",
+      "relationshipType": "many-to-many",
       "otherEntityName": "element",
       "otherEntityRelationshipName": "produit",
       "relationshipName": "ingredient",
-      "otherEntityField": "nombre"
+      "ownerSide": false
     }
   ],
   "entityTableName": "produit",

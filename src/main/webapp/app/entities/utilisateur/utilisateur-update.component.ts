@@ -4,6 +4,9 @@ import { required } from 'vuelidate/lib/validators';
 
 import AlertService from '@/shared/alert/alert.service';
 
+import ClientService from '@/entities/client/client.service';
+import { IClient } from '@/shared/model/client.model';
+
 import { IUtilisateur, Utilisateur } from '@/shared/model/utilisateur.model';
 import UtilisateurService from './utilisateur.service';
 import { RoleEnum } from '@/shared/model/enumerations/role-enum.model';
@@ -16,6 +19,9 @@ const validations: any = {
     role: {
       required,
     },
+    createdDate: {},
+    startDate: {},
+    endDate: {},
   },
 };
 
@@ -27,6 +33,10 @@ export default class UtilisateurUpdate extends Vue {
   @Inject('alertService') private alertService: () => AlertService;
 
   public utilisateur: IUtilisateur = new Utilisateur();
+
+  @Inject('clientService') private clientService: () => ClientService;
+
+  public clients: IClient[] = [];
   public roleEnumValues: string[] = Object.keys(RoleEnum);
   public isSaving = false;
   public currentLanguage = '';
@@ -36,6 +46,7 @@ export default class UtilisateurUpdate extends Vue {
       if (to.params.utilisateurId) {
         vm.retrieveUtilisateur(to.params.utilisateurId);
       }
+      vm.initRelationships();
     });
   }
 
@@ -107,5 +118,11 @@ export default class UtilisateurUpdate extends Vue {
     this.$router.go(-1);
   }
 
-  public initRelationships(): void {}
+  public initRelationships(): void {
+    this.clientService()
+      .retrieve()
+      .then(res => {
+        this.clients = res.data;
+      });
+  }
 }

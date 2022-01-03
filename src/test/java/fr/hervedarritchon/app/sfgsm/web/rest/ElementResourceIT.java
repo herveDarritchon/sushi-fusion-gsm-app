@@ -2,22 +2,32 @@ package fr.hervedarritchon.app.sfgsm.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import fr.hervedarritchon.app.sfgsm.IntegrationTest;
 import fr.hervedarritchon.app.sfgsm.domain.Element;
 import fr.hervedarritchon.app.sfgsm.repository.ElementRepository;
+import fr.hervedarritchon.app.sfgsm.service.ElementService;
 import fr.hervedarritchon.app.sfgsm.service.dto.ElementDTO;
 import fr.hervedarritchon.app.sfgsm.service.mapper.ElementMapper;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,12 +37,22 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link ElementResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class ElementResourceIT {
 
     private static final String DEFAULT_NOM = "AAAAAAAAAA";
     private static final String UPDATED_NOM = "BBBBBBBBBB";
+
+    private static final LocalDate DEFAULT_CREATED_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_CREATED_DATE = LocalDate.now(ZoneId.systemDefault());
+
+    private static final LocalDate DEFAULT_START_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_START_DATE = LocalDate.now(ZoneId.systemDefault());
+
+    private static final LocalDate DEFAULT_END_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_END_DATE = LocalDate.now(ZoneId.systemDefault());
 
     private static final String ENTITY_API_URL = "/api/elements";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -43,8 +63,14 @@ class ElementResourceIT {
     @Autowired
     private ElementRepository elementRepository;
 
+    @Mock
+    private ElementRepository elementRepositoryMock;
+
     @Autowired
     private ElementMapper elementMapper;
+
+    @Mock
+    private ElementService elementServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -61,7 +87,11 @@ class ElementResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Element createEntity(EntityManager em) {
-        Element element = new Element().nom(DEFAULT_NOM);
+        Element element = new Element()
+            .nom(DEFAULT_NOM)
+            .createdDate(DEFAULT_CREATED_DATE)
+            .startDate(DEFAULT_START_DATE)
+            .endDate(DEFAULT_END_DATE);
         return element;
     }
 
@@ -72,7 +102,11 @@ class ElementResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Element createUpdatedEntity(EntityManager em) {
-        Element element = new Element().nom(UPDATED_NOM);
+        Element element = new Element()
+            .nom(UPDATED_NOM)
+            .createdDate(UPDATED_CREATED_DATE)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE);
         return element;
     }
 
@@ -96,6 +130,9 @@ class ElementResourceIT {
         assertThat(elementList).hasSize(databaseSizeBeforeCreate + 1);
         Element testElement = elementList.get(elementList.size() - 1);
         assertThat(testElement.getNom()).isEqualTo(DEFAULT_NOM);
+        assertThat(testElement.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
+        assertThat(testElement.getStartDate()).isEqualTo(DEFAULT_START_DATE);
+        assertThat(testElement.getEndDate()).isEqualTo(DEFAULT_END_DATE);
     }
 
     @Test
@@ -147,7 +184,28 @@ class ElementResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(element.getId().intValue())))
-            .andExpect(jsonPath("$.[*].nom").value(hasItem(DEFAULT_NOM)));
+            .andExpect(jsonPath("$.[*].nom").value(hasItem(DEFAULT_NOM)))
+            .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
+            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
+            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllElementsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(elementServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restElementMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(elementServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllElementsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(elementServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restElementMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(elementServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test
@@ -162,7 +220,10 @@ class ElementResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(element.getId().intValue()))
-            .andExpect(jsonPath("$.nom").value(DEFAULT_NOM));
+            .andExpect(jsonPath("$.nom").value(DEFAULT_NOM))
+            .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()))
+            .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
+            .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()));
     }
 
     @Test
@@ -184,7 +245,7 @@ class ElementResourceIT {
         Element updatedElement = elementRepository.findById(element.getId()).get();
         // Disconnect from session so that the updates on updatedElement are not directly saved in db
         em.detach(updatedElement);
-        updatedElement.nom(UPDATED_NOM);
+        updatedElement.nom(UPDATED_NOM).createdDate(UPDATED_CREATED_DATE).startDate(UPDATED_START_DATE).endDate(UPDATED_END_DATE);
         ElementDTO elementDTO = elementMapper.toDto(updatedElement);
 
         restElementMockMvc
@@ -200,6 +261,9 @@ class ElementResourceIT {
         assertThat(elementList).hasSize(databaseSizeBeforeUpdate);
         Element testElement = elementList.get(elementList.size() - 1);
         assertThat(testElement.getNom()).isEqualTo(UPDATED_NOM);
+        assertThat(testElement.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
+        assertThat(testElement.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testElement.getEndDate()).isEqualTo(UPDATED_END_DATE);
     }
 
     @Test
@@ -279,7 +343,7 @@ class ElementResourceIT {
         Element partialUpdatedElement = new Element();
         partialUpdatedElement.setId(element.getId());
 
-        partialUpdatedElement.nom(UPDATED_NOM);
+        partialUpdatedElement.nom(UPDATED_NOM).createdDate(UPDATED_CREATED_DATE).startDate(UPDATED_START_DATE);
 
         restElementMockMvc
             .perform(
@@ -294,6 +358,9 @@ class ElementResourceIT {
         assertThat(elementList).hasSize(databaseSizeBeforeUpdate);
         Element testElement = elementList.get(elementList.size() - 1);
         assertThat(testElement.getNom()).isEqualTo(UPDATED_NOM);
+        assertThat(testElement.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
+        assertThat(testElement.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testElement.getEndDate()).isEqualTo(DEFAULT_END_DATE);
     }
 
     @Test
@@ -308,7 +375,7 @@ class ElementResourceIT {
         Element partialUpdatedElement = new Element();
         partialUpdatedElement.setId(element.getId());
 
-        partialUpdatedElement.nom(UPDATED_NOM);
+        partialUpdatedElement.nom(UPDATED_NOM).createdDate(UPDATED_CREATED_DATE).startDate(UPDATED_START_DATE).endDate(UPDATED_END_DATE);
 
         restElementMockMvc
             .perform(
@@ -323,6 +390,9 @@ class ElementResourceIT {
         assertThat(elementList).hasSize(databaseSizeBeforeUpdate);
         Element testElement = elementList.get(elementList.size() - 1);
         assertThat(testElement.getNom()).isEqualTo(UPDATED_NOM);
+        assertThat(testElement.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
+        assertThat(testElement.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testElement.getEndDate()).isEqualTo(UPDATED_END_DATE);
     }
 
     @Test

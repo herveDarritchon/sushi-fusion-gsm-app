@@ -1,6 +1,7 @@
 package fr.hervedarritchon.app.sfgsm.service.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 import javax.validation.constraints.*;
 
@@ -18,7 +19,11 @@ public class ProduitDTO implements Serializable {
 
     private Integer prix;
 
-    private ElementDTO ingredient;
+    private LocalDate createdDate;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     public Long getId() {
         return id;
@@ -52,12 +57,28 @@ public class ProduitDTO implements Serializable {
         this.prix = prix;
     }
 
-    public ElementDTO getIngredient() {
-        return ingredient;
+    public LocalDate getCreatedDate() {
+        return createdDate;
     }
 
-    public void setIngredient(ElementDTO ingredient) {
-        this.ingredient = ingredient;
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     @Override
@@ -89,7 +110,9 @@ public class ProduitDTO implements Serializable {
             ", reference='" + getReference() + "'" +
             ", nom='" + getNom() + "'" +
             ", prix=" + getPrix() +
-            ", ingredient=" + getIngredient() +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
             "}";
     }
 }

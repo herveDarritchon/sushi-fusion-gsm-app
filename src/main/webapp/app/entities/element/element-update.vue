@@ -24,6 +24,106 @@
               <small class="form-text text-danger" v-if="!$v.element.nom.required"> This field is required. </small>
             </div>
           </div>
+          <div class="form-group">
+            <label class="form-control-label" for="element-createdDate">Created Date</label>
+            <b-input-group class="mb-3">
+              <b-input-group-prepend>
+                <b-form-datepicker
+                  aria-controls="element-createdDate"
+                  v-model="$v.element.createdDate.$model"
+                  name="createdDate"
+                  class="form-control"
+                  :locale="currentLanguage"
+                  button-only
+                  today-button
+                  reset-button
+                  close-button
+                >
+                </b-form-datepicker>
+              </b-input-group-prepend>
+              <b-form-input
+                id="element-createdDate"
+                data-cy="createdDate"
+                type="text"
+                class="form-control"
+                name="createdDate"
+                :class="{ valid: !$v.element.createdDate.$invalid, invalid: $v.element.createdDate.$invalid }"
+                v-model="$v.element.createdDate.$model"
+              />
+            </b-input-group>
+          </div>
+          <div class="form-group">
+            <label class="form-control-label" for="element-startDate">Start Date</label>
+            <b-input-group class="mb-3">
+              <b-input-group-prepend>
+                <b-form-datepicker
+                  aria-controls="element-startDate"
+                  v-model="$v.element.startDate.$model"
+                  name="startDate"
+                  class="form-control"
+                  :locale="currentLanguage"
+                  button-only
+                  today-button
+                  reset-button
+                  close-button
+                >
+                </b-form-datepicker>
+              </b-input-group-prepend>
+              <b-form-input
+                id="element-startDate"
+                data-cy="startDate"
+                type="text"
+                class="form-control"
+                name="startDate"
+                :class="{ valid: !$v.element.startDate.$invalid, invalid: $v.element.startDate.$invalid }"
+                v-model="$v.element.startDate.$model"
+              />
+            </b-input-group>
+          </div>
+          <div class="form-group">
+            <label class="form-control-label" for="element-endDate">End Date</label>
+            <b-input-group class="mb-3">
+              <b-input-group-prepend>
+                <b-form-datepicker
+                  aria-controls="element-endDate"
+                  v-model="$v.element.endDate.$model"
+                  name="endDate"
+                  class="form-control"
+                  :locale="currentLanguage"
+                  button-only
+                  today-button
+                  reset-button
+                  close-button
+                >
+                </b-form-datepicker>
+              </b-input-group-prepend>
+              <b-form-input
+                id="element-endDate"
+                data-cy="endDate"
+                type="text"
+                class="form-control"
+                name="endDate"
+                :class="{ valid: !$v.element.endDate.$invalid, invalid: $v.element.endDate.$invalid }"
+                v-model="$v.element.endDate.$model"
+              />
+            </b-input-group>
+          </div>
+          <div class="form-group">
+            <label for="element-produit">Produit</label>
+            <select
+              class="form-control"
+              id="element-produits"
+              data-cy="produit"
+              multiple
+              name="produit"
+              v-if="element.produits !== undefined"
+              v-model="element.produits"
+            >
+              <option v-bind:value="getSelected(element.produits, produitOption)" v-for="produitOption in produits" :key="produitOption.id">
+                {{ produitOption.id }}
+              </option>
+            </select>
+          </div>
         </div>
         <div>
           <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" v-on:click="previousState()">

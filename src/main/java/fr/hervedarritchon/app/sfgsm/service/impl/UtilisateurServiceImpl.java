@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,20 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public List<UtilisateurDTO> findAll() {
         log.debug("Request to get all Utilisateurs");
         return utilisateurRepository.findAll().stream().map(utilisateurMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    /**
+     *  Get all the utilisateurs where Client is {@code null}.
+     *  @return the list of entities.
+     */
+    @Transactional(readOnly = true)
+    public List<UtilisateurDTO> findAllWhereClientIsNull() {
+        log.debug("Request to get all utilisateurs where Client is null");
+        return StreamSupport
+            .stream(utilisateurRepository.findAll().spliterator(), false)
+            .filter(utilisateur -> utilisateur.getClient() == null)
+            .map(utilisateurMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override

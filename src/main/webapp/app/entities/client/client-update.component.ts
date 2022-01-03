@@ -1,6 +1,6 @@
 import { Component, Vue, Inject } from 'vue-property-decorator';
 
-import { required } from 'vuelidate/lib/validators';
+import { required, minLength, maxLength } from 'vuelidate/lib/validators';
 
 import AlertService from '@/shared/alert/alert.service';
 
@@ -15,9 +15,14 @@ const validations: any = {
   client: {
     nom: {
       required,
+      minLength: minLength(5),
+      maxLength: maxLength(75),
     },
     adresse: {},
     type: {},
+    createdDate: {},
+    startDate: {},
+    endDate: {},
   },
 };
 

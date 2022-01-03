@@ -31,7 +31,9 @@
             <th scope="row"><span>Reference</span></th>
             <th scope="row"><span>Nom</span></th>
             <th scope="row"><span>Prix</span></th>
-            <th scope="row"><span>Ingredient</span></th>
+            <th scope="row"><span>Created Date</span></th>
+            <th scope="row"><span>Start Date</span></th>
+            <th scope="row"><span>End Date</span></th>
             <th scope="row"></th>
           </tr>
         </thead>
@@ -43,13 +45,9 @@
             <td>{{ produit.reference }}</td>
             <td>{{ produit.nom }}</td>
             <td>{{ produit.prix }}</td>
-            <td>
-              <div v-if="produit.ingredient">
-                <router-link :to="{ name: 'ElementView', params: { elementId: produit.ingredient.id } }">{{
-                  produit.ingredient.nombre
-                }}</router-link>
-              </div>
-            </td>
+            <td>{{ produit.createdDate }}</td>
+            <td>{{ produit.startDate }}</td>
+            <td>{{ produit.endDate }}</td>
             <td class="text-right">
               <div class="btn-group">
                 <router-link :to="{ name: 'ProduitView', params: { produitId: produit.id } }" custom v-slot="{ navigate }">

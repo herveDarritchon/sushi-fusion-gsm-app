@@ -9,6 +9,7 @@ import UtilisateurUpdateComponent from '@/entities/utilisateur/utilisateur-updat
 import UtilisateurClass from '@/entities/utilisateur/utilisateur-update.component';
 import UtilisateurService from '@/entities/utilisateur/utilisateur.service';
 
+import ClientService from '@/entities/client/client.service';
 import AlertService from '@/shared/alert/alert.service';
 
 const localVue = createLocalVue();
@@ -40,6 +41,11 @@ describe('Component Tests', () => {
         provide: {
           utilisateurService: () => utilisateurServiceStub,
           alertService: () => new AlertService(),
+
+          clientService: () =>
+            sinon.createStubInstance<ClientService>(ClientService, {
+              retrieve: sinon.stub().resolves({}),
+            } as any),
         },
       });
       comp = wrapper.vm;
