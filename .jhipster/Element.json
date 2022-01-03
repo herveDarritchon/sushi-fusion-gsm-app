@@ -23,7 +23,7 @@
     {
       "relationshipType": "many-to-many",
       "otherEntityName": "produit",
-      "otherEntityRelationshipName": "ingredient",
+      "otherEntityRelationshipName": "element",
       "relationshipName": "produit",
       "ownerSide": true
     }

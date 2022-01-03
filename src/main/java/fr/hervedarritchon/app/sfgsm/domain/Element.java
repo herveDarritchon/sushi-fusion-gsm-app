@@ -42,7 +42,7 @@ public class Element implements Serializable {
         joinColumns = @JoinColumn(name = "element_id"),
         inverseJoinColumns = @JoinColumn(name = "produit_id")
     )
-    @JsonIgnoreProperties(value = { "ingredients" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "elements" }, allowSetters = true)
     private Set<Produit> produits = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -127,13 +127,13 @@ public class Element implements Serializable {
 
     public Element addProduit(Produit produit) {
         this.produits.add(produit);
-        produit.getIngredients().add(this);
+        produit.getElements().add(this);
         return this;
     }
 
     public Element removeProduit(Produit produit) {
         this.produits.remove(produit);
-        produit.getIngredients().remove(this);
+        produit.getElements().remove(this);
         return this;
     }
 
