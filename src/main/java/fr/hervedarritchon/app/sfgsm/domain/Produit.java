@@ -44,7 +44,7 @@ public class Produit implements Serializable {
 
     @ManyToMany(mappedBy = "produits")
     @JsonIgnoreProperties(value = { "produits" }, allowSetters = true)
-    private Set<Element> ingredients = new HashSet<>();
+    private Set<Element> elements = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -139,33 +139,33 @@ public class Produit implements Serializable {
         this.endDate = endDate;
     }
 
-    public Set<Element> getIngredients() {
-        return this.ingredients;
+    public Set<Element> getElements() {
+        return this.elements;
     }
 
-    public void setIngredients(Set<Element> elements) {
-        if (this.ingredients != null) {
-            this.ingredients.forEach(i -> i.removeProduit(this));
+    public void setElements(Set<Element> elements) {
+        if (this.elements != null) {
+            this.elements.forEach(i -> i.removeProduit(this));
         }
         if (elements != null) {
             elements.forEach(i -> i.addProduit(this));
         }
-        this.ingredients = elements;
+        this.elements = elements;
     }
 
-    public Produit ingredients(Set<Element> elements) {
-        this.setIngredients(elements);
+    public Produit elements(Set<Element> elements) {
+        this.setElements(elements);
         return this;
     }
 
-    public Produit addIngredient(Element element) {
-        this.ingredients.add(element);
+    public Produit addElement(Element element) {
+        this.elements.add(element);
         element.getProduits().add(this);
         return this;
     }
 
-    public Produit removeIngredient(Element element) {
-        this.ingredients.remove(element);
+    public Produit removeElement(Element element) {
+        this.elements.remove(element);
         element.getProduits().remove(this);
         return this;
     }

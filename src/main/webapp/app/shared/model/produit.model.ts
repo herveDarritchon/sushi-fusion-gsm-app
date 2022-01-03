@@ -8,7 +8,7 @@ export interface IProduit {
   createdDate?: Date | null;
   startDate?: Date | null;
   endDate?: Date | null;
-  ingredients?: IElement[] | null;
+  elements?: IElement[] | null;
 }
 
 export class Produit implements IProduit {
@@ -20,6 +20,6 @@ export class Produit implements IProduit {
     public createdDate?: Date | null,
     public startDate?: Date | null,
     public endDate?: Date | null,
-    public ingredients?: IElement[] | null
+    public elements?: IElement[] | null
   ) {}
 }
