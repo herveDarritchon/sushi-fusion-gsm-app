@@ -1,32 +1,43 @@
 
 entity Client {
-	nom String required,
+	nom String required minlength(5) maxlength(75),
     adresse String,
-    type ClientEnum
+    type ClientEnum,
+    createdDate LocalDate,
+    startDate LocalDate,
+    endDate LocalDate
 }
 
 relationship OneToOne {
-	Client{vendeur} to Utilisateur
+	Client to Utilisateur
 }
 
 entity Produit {
 	reference String,
 	nom String required,
-    prix Integer
+    prix Integer,
+    createdDate LocalDate,
+    startDate LocalDate,
+    endDate LocalDate
 }
 
-
-relationship OneToMany {
-	Element to Produit{ingredient(nombre)}
+relationship ManyToMany {
+	Element{produit} to Produit{ingredient}
 }
 
 entity Element {
 	nom String required,
+    createdDate LocalDate,
+    startDate LocalDate,
+    endDate LocalDate    
 }
 
 entity Utilisateur {
 	nom String required,
     role RoleEnum required,
+    createdDate LocalDate,
+    startDate LocalDate,
+    endDate LocalDate
 }
 
 enum RoleEnum {
