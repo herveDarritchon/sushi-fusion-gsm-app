@@ -6,7 +6,10 @@ export interface IClient {
   nom?: string;
   adresse?: string | null;
   type?: ClientEnum | null;
-  vendeur?: IUtilisateur | null;
+  createdDate?: Date | null;
+  startDate?: Date | null;
+  endDate?: Date | null;
+  utilisateur?: IUtilisateur | null;
 }
 
 export class Client implements IClient {
@@ -15,6 +18,9 @@ export class Client implements IClient {
     public nom?: string,
     public adresse?: string | null,
     public type?: ClientEnum | null,
-    public vendeur?: IUtilisateur | null
+    public createdDate?: Date | null,
+    public startDate?: Date | null,
+    public endDate?: Date | null,
+    public utilisateur?: IUtilisateur | null
   ) {}
 }

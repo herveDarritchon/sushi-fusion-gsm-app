@@ -49,17 +49,88 @@
             />
           </div>
           <div class="form-group">
-            <label class="form-control-label" for="produit-ingredient">Ingredient</label>
-            <select class="form-control" id="produit-ingredient" data-cy="ingredient" name="ingredient" v-model="produit.ingredient">
-              <option v-bind:value="null"></option>
-              <option
-                v-bind:value="produit.ingredient && elementOption.id === produit.ingredient.id ? produit.ingredient : elementOption"
-                v-for="elementOption in elements"
-                :key="elementOption.id"
-              >
-                {{ elementOption.nombre }}
-              </option>
-            </select>
+            <label class="form-control-label" for="produit-createdDate">Created Date</label>
+            <b-input-group class="mb-3">
+              <b-input-group-prepend>
+                <b-form-datepicker
+                  aria-controls="produit-createdDate"
+                  v-model="$v.produit.createdDate.$model"
+                  name="createdDate"
+                  class="form-control"
+                  :locale="currentLanguage"
+                  button-only
+                  today-button
+                  reset-button
+                  close-button
+                >
+                </b-form-datepicker>
+              </b-input-group-prepend>
+              <b-form-input
+                id="produit-createdDate"
+                data-cy="createdDate"
+                type="text"
+                class="form-control"
+                name="createdDate"
+                :class="{ valid: !$v.produit.createdDate.$invalid, invalid: $v.produit.createdDate.$invalid }"
+                v-model="$v.produit.createdDate.$model"
+              />
+            </b-input-group>
+          </div>
+          <div class="form-group">
+            <label class="form-control-label" for="produit-startDate">Start Date</label>
+            <b-input-group class="mb-3">
+              <b-input-group-prepend>
+                <b-form-datepicker
+                  aria-controls="produit-startDate"
+                  v-model="$v.produit.startDate.$model"
+                  name="startDate"
+                  class="form-control"
+                  :locale="currentLanguage"
+                  button-only
+                  today-button
+                  reset-button
+                  close-button
+                >
+                </b-form-datepicker>
+              </b-input-group-prepend>
+              <b-form-input
+                id="produit-startDate"
+                data-cy="startDate"
+                type="text"
+                class="form-control"
+                name="startDate"
+                :class="{ valid: !$v.produit.startDate.$invalid, invalid: $v.produit.startDate.$invalid }"
+                v-model="$v.produit.startDate.$model"
+              />
+            </b-input-group>
+          </div>
+          <div class="form-group">
+            <label class="form-control-label" for="produit-endDate">End Date</label>
+            <b-input-group class="mb-3">
+              <b-input-group-prepend>
+                <b-form-datepicker
+                  aria-controls="produit-endDate"
+                  v-model="$v.produit.endDate.$model"
+                  name="endDate"
+                  class="form-control"
+                  :locale="currentLanguage"
+                  button-only
+                  today-button
+                  reset-button
+                  close-button
+                >
+                </b-form-datepicker>
+              </b-input-group-prepend>
+              <b-form-input
+                id="produit-endDate"
+                data-cy="endDate"
+                type="text"
+                class="form-control"
+                name="endDate"
+                :class="{ valid: !$v.produit.endDate.$invalid, invalid: $v.produit.endDate.$invalid }"
+                v-model="$v.produit.endDate.$model"
+              />
+            </b-input-group>
           </div>
         </div>
         <div>

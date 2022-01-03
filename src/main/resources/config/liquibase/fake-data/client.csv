@@ -1,11 +1,11 @@
-id;nom;adresse;type
-1;reciprocal withdrawal;synthesize compressing;ATELIER
-2;Island applications paradigm;foreground XSS engage;ATELIER
-3;Adaptive Oregon Handcrafted;Internal online;ATELIER
-4;compressing Springs Jewelery;parsing Licensed morph;DETAILLANT
-5;e-markets Corporate;Cotton;GMS
-6;Taiwan Wooden back-end;Avon online;GMS
-7;paradigms transitional Multi-layered;parsing orange copying;ATELIER
-8;regional;Grocery;ATELIER
-9;Corporate Proactive Granite;Forward Up-sized payment;ATELIER
-10;Small;Automotive Fantastic Ball;GMS
+id;nom;adresse;type;created_date;start_date;end_date
+1;reciprocal withdrawal;synthesize compressing;ATELIER;2022-01-02;2022-01-02;2022-01-02
+2;applications paradigm Functionality;XSS;ATELIER;2022-01-02;2022-01-02;2022-01-02
+3;Adaptive Oregon Handcrafted;Internal online;ATELIER;2022-01-02;2022-01-02;2022-01-02
+4;Springs Jewelery;parsing Licensed morph;DETAILLANT;2022-01-02;2022-01-02;2022-01-02
+5;Corporate Wooden;Metal Wooden back-end;ATELIER;2022-01-02;2022-01-02;2022-01-02
+6;Avon index Pound;Multi-layered Hryvnia;GMS;2022-01-02;2022-01-02;2022-01-02
+7;hub encoding Cape;Division Corporate;GMS;2022-01-02;2022-01-02;2022-01-02
+8;Wisconsin neural;migration Plastic Small;DETAILLANT;2022-01-02;2022-01-01;2022-01-02
+9;dynamic;Pants;ATELIER;2022-01-02;2022-01-02;2022-01-02
+10;Reduced;Nicaragua Executive;ATELIER;2022-01-02;2022-01-01;2022-01-02

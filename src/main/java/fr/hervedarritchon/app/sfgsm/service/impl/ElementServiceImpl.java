@@ -61,11 +61,15 @@ public class ElementServiceImpl implements ElementService {
         return elementRepository.findAll(pageable).map(elementMapper::toDto);
     }
 
+    public Page<ElementDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return elementRepository.findAllWithEagerRelationships(pageable).map(elementMapper::toDto);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Optional<ElementDTO> findOne(Long id) {
         log.debug("Request to get Element : {}", id);
-        return elementRepository.findById(id).map(elementMapper::toDto);
+        return elementRepository.findOneWithEagerRelationships(id).map(elementMapper::toDto);
     }
 
     @Override

@@ -1,7 +1,9 @@
 /* tslint:disable max-line-length */
 import axios from 'axios';
 import sinon from 'sinon';
+import dayjs from 'dayjs';
 
+import { DATE_FORMAT } from '@/shared/date/filters';
 import ClientService from '@/entities/client/client.service';
 import { Client } from '@/shared/model/client.model';
 import { ClientEnum } from '@/shared/model/enumerations/client-enum.model';
@@ -27,15 +29,24 @@ describe('Service Tests', () => {
   describe('Client Service', () => {
     let service: ClientService;
     let elemDefault;
+    let currentDate: Date;
 
     beforeEach(() => {
       service = new ClientService();
-      elemDefault = new Client(123, 'AAAAAAA', 'AAAAAAA', ClientEnum.GMS);
+      currentDate = new Date();
+      elemDefault = new Client(123, 'AAAAAAA', 'AAAAAAA', ClientEnum.GMS, currentDate, currentDate, currentDate);
     });
 
     describe('Service methods', () => {
       it('should find an element', async () => {
-        const returnedFromService = Object.assign({}, elemDefault);
+        const returnedFromService = Object.assign(
+          {
+            createdDate: dayjs(currentDate).format(DATE_FORMAT),
+            startDate: dayjs(currentDate).format(DATE_FORMAT),
+            endDate: dayjs(currentDate).format(DATE_FORMAT),
+          },
+          elemDefault
+        );
         axiosStub.get.resolves({ data: returnedFromService });
 
         return service.find(123).then(res => {
@@ -57,10 +68,20 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 123,
+            createdDate: dayjs(currentDate).format(DATE_FORMAT),
+            startDate: dayjs(currentDate).format(DATE_FORMAT),
+            endDate: dayjs(currentDate).format(DATE_FORMAT),
           },
           elemDefault
         );
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            createdDate: currentDate,
+            startDate: currentDate,
+            endDate: currentDate,
+          },
+          returnedFromService
+        );
 
         axiosStub.post.resolves({ data: returnedFromService });
         return service.create({}).then(res => {
@@ -85,11 +106,21 @@ describe('Service Tests', () => {
             nom: 'BBBBBB',
             adresse: 'BBBBBB',
             type: 'BBBBBB',
+            createdDate: dayjs(currentDate).format(DATE_FORMAT),
+            startDate: dayjs(currentDate).format(DATE_FORMAT),
+            endDate: dayjs(currentDate).format(DATE_FORMAT),
           },
           elemDefault
         );
 
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            createdDate: currentDate,
+            startDate: currentDate,
+            endDate: currentDate,
+          },
+          returnedFromService
+        );
         axiosStub.put.resolves({ data: returnedFromService });
 
         return service.update(expected).then(res => {
@@ -113,12 +144,22 @@ describe('Service Tests', () => {
           {
             adresse: 'BBBBBB',
             type: 'BBBBBB',
+            createdDate: dayjs(currentDate).format(DATE_FORMAT),
+            startDate: dayjs(currentDate).format(DATE_FORMAT),
+            endDate: dayjs(currentDate).format(DATE_FORMAT),
           },
           new Client()
         );
         const returnedFromService = Object.assign(patchObject, elemDefault);
 
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            createdDate: currentDate,
+            startDate: currentDate,
+            endDate: currentDate,
+          },
+          returnedFromService
+        );
         axiosStub.patch.resolves({ data: returnedFromService });
 
         return service.partialUpdate(patchObject).then(res => {
@@ -143,10 +184,20 @@ describe('Service Tests', () => {
             nom: 'BBBBBB',
             adresse: 'BBBBBB',
             type: 'BBBBBB',
+            createdDate: dayjs(currentDate).format(DATE_FORMAT),
+            startDate: dayjs(currentDate).format(DATE_FORMAT),
+            endDate: dayjs(currentDate).format(DATE_FORMAT),
           },
           elemDefault
         );
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            createdDate: currentDate,
+            startDate: currentDate,
+            endDate: currentDate,
+          },
+          returnedFromService
+        );
         axiosStub.get.resolves([returnedFromService]);
         return service.retrieve().then(res => {
           expect(res).toContainEqual(expected);

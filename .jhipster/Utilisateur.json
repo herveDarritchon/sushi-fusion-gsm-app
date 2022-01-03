@@ -11,9 +11,29 @@
       "fieldType": "RoleEnum",
       "fieldValues": "VENDEUR,ADMIN,ASSISTANTE",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "startDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "endDate",
+      "fieldType": "LocalDate"
     }
   ],
-  "relationships": [],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "client",
+      "otherEntityRelationshipName": "utilisateur",
+      "relationshipName": "client",
+      "ownerSide": false
+    }
+  ],
   "entityTableName": "utilisateur",
   "dto": "mapstruct",
   "pagination": "no",

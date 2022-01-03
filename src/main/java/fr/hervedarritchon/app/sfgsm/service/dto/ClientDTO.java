@@ -2,6 +2,7 @@ package fr.hervedarritchon.app.sfgsm.service.dto;
 
 import fr.hervedarritchon.app.sfgsm.domain.enumeration.ClientEnum;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 import javax.validation.constraints.*;
 
@@ -13,13 +14,20 @@ public class ClientDTO implements Serializable {
     private Long id;
 
     @NotNull
+    @Size(min = 5, max = 75)
     private String nom;
 
     private String adresse;
 
     private ClientEnum type;
 
-    private UtilisateurDTO vendeur;
+    private LocalDate createdDate;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
+    private UtilisateurDTO utilisateur;
 
     public Long getId() {
         return id;
@@ -53,12 +61,36 @@ public class ClientDTO implements Serializable {
         this.type = type;
     }
 
-    public UtilisateurDTO getVendeur() {
-        return vendeur;
+    public LocalDate getCreatedDate() {
+        return createdDate;
     }
 
-    public void setVendeur(UtilisateurDTO vendeur) {
-        this.vendeur = vendeur;
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public UtilisateurDTO getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(UtilisateurDTO utilisateur) {
+        this.utilisateur = utilisateur;
     }
 
     @Override
@@ -90,7 +122,10 @@ public class ClientDTO implements Serializable {
             ", nom='" + getNom() + "'" +
             ", adresse='" + getAdresse() + "'" +
             ", type='" + getType() + "'" +
-            ", vendeur=" + getVendeur() +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
+            ", utilisateur=" + getUtilisateur() +
             "}";
     }
 }

@@ -4,7 +4,9 @@
     {
       "fieldName": "nom",
       "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": ["required", "minlength", "maxlength"],
+      "fieldValidateRulesMinlength": "5",
+      "fieldValidateRulesMaxlength": "75"
     },
     {
       "fieldName": "adresse",
@@ -14,6 +16,18 @@
       "fieldName": "type",
       "fieldType": "ClientEnum",
       "fieldValues": "GMS,ATELIER,DETAILLANT"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "startDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "endDate",
+      "fieldType": "LocalDate"
     }
   ],
   "relationships": [
@@ -21,7 +35,7 @@
       "relationshipType": "one-to-one",
       "otherEntityName": "utilisateur",
       "otherEntityRelationshipName": "client",
-      "relationshipName": "vendeur",
+      "relationshipName": "utilisateur",
       "ownerSide": true
     }
   ],

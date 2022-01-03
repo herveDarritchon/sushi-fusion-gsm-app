@@ -17,6 +17,9 @@ const validations: any = {
       required,
     },
     prix: {},
+    createdDate: {},
+    startDate: {},
+    endDate: {},
   },
 };
 

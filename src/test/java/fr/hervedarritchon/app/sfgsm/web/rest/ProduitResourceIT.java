@@ -10,6 +10,8 @@ import fr.hervedarritchon.app.sfgsm.domain.Produit;
 import fr.hervedarritchon.app.sfgsm.repository.ProduitRepository;
 import fr.hervedarritchon.app.sfgsm.service.dto.ProduitDTO;
 import fr.hervedarritchon.app.sfgsm.service.mapper.ProduitMapper;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -40,6 +42,15 @@ class ProduitResourceIT {
     private static final Integer DEFAULT_PRIX = 1;
     private static final Integer UPDATED_PRIX = 2;
 
+    private static final LocalDate DEFAULT_CREATED_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_CREATED_DATE = LocalDate.now(ZoneId.systemDefault());
+
+    private static final LocalDate DEFAULT_START_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_START_DATE = LocalDate.now(ZoneId.systemDefault());
+
+    private static final LocalDate DEFAULT_END_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_END_DATE = LocalDate.now(ZoneId.systemDefault());
+
     private static final String ENTITY_API_URL = "/api/produits";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -67,7 +78,13 @@ class ProduitResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Produit createEntity(EntityManager em) {
-        Produit produit = new Produit().reference(DEFAULT_REFERENCE).nom(DEFAULT_NOM).prix(DEFAULT_PRIX);
+        Produit produit = new Produit()
+            .reference(DEFAULT_REFERENCE)
+            .nom(DEFAULT_NOM)
+            .prix(DEFAULT_PRIX)
+            .createdDate(DEFAULT_CREATED_DATE)
+            .startDate(DEFAULT_START_DATE)
+            .endDate(DEFAULT_END_DATE);
         return produit;
     }
 
@@ -78,7 +95,13 @@ class ProduitResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Produit createUpdatedEntity(EntityManager em) {
-        Produit produit = new Produit().reference(UPDATED_REFERENCE).nom(UPDATED_NOM).prix(UPDATED_PRIX);
+        Produit produit = new Produit()
+            .reference(UPDATED_REFERENCE)
+            .nom(UPDATED_NOM)
+            .prix(UPDATED_PRIX)
+            .createdDate(UPDATED_CREATED_DATE)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE);
         return produit;
     }
 
@@ -104,6 +127,9 @@ class ProduitResourceIT {
         assertThat(testProduit.getReference()).isEqualTo(DEFAULT_REFERENCE);
         assertThat(testProduit.getNom()).isEqualTo(DEFAULT_NOM);
         assertThat(testProduit.getPrix()).isEqualTo(DEFAULT_PRIX);
+        assertThat(testProduit.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
+        assertThat(testProduit.getStartDate()).isEqualTo(DEFAULT_START_DATE);
+        assertThat(testProduit.getEndDate()).isEqualTo(DEFAULT_END_DATE);
     }
 
     @Test
@@ -157,7 +183,10 @@ class ProduitResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(produit.getId().intValue())))
             .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)))
             .andExpect(jsonPath("$.[*].nom").value(hasItem(DEFAULT_NOM)))
-            .andExpect(jsonPath("$.[*].prix").value(hasItem(DEFAULT_PRIX)));
+            .andExpect(jsonPath("$.[*].prix").value(hasItem(DEFAULT_PRIX)))
+            .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
+            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
+            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())));
     }
 
     @Test
@@ -174,7 +203,10 @@ class ProduitResourceIT {
             .andExpect(jsonPath("$.id").value(produit.getId().intValue()))
             .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE))
             .andExpect(jsonPath("$.nom").value(DEFAULT_NOM))
-            .andExpect(jsonPath("$.prix").value(DEFAULT_PRIX));
+            .andExpect(jsonPath("$.prix").value(DEFAULT_PRIX))
+            .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()))
+            .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
+            .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()));
     }
 
     @Test
@@ -196,7 +228,13 @@ class ProduitResourceIT {
         Produit updatedProduit = produitRepository.findById(produit.getId()).get();
         // Disconnect from session so that the updates on updatedProduit are not directly saved in db
         em.detach(updatedProduit);
-        updatedProduit.reference(UPDATED_REFERENCE).nom(UPDATED_NOM).prix(UPDATED_PRIX);
+        updatedProduit
+            .reference(UPDATED_REFERENCE)
+            .nom(UPDATED_NOM)
+            .prix(UPDATED_PRIX)
+            .createdDate(UPDATED_CREATED_DATE)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE);
         ProduitDTO produitDTO = produitMapper.toDto(updatedProduit);
 
         restProduitMockMvc
@@ -214,6 +252,9 @@ class ProduitResourceIT {
         assertThat(testProduit.getReference()).isEqualTo(UPDATED_REFERENCE);
         assertThat(testProduit.getNom()).isEqualTo(UPDATED_NOM);
         assertThat(testProduit.getPrix()).isEqualTo(UPDATED_PRIX);
+        assertThat(testProduit.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
+        assertThat(testProduit.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testProduit.getEndDate()).isEqualTo(UPDATED_END_DATE);
     }
 
     @Test
@@ -293,7 +334,7 @@ class ProduitResourceIT {
         Produit partialUpdatedProduit = new Produit();
         partialUpdatedProduit.setId(produit.getId());
 
-        partialUpdatedProduit.prix(UPDATED_PRIX);
+        partialUpdatedProduit.prix(UPDATED_PRIX).createdDate(UPDATED_CREATED_DATE).startDate(UPDATED_START_DATE);
 
         restProduitMockMvc
             .perform(
@@ -310,6 +351,9 @@ class ProduitResourceIT {
         assertThat(testProduit.getReference()).isEqualTo(DEFAULT_REFERENCE);
         assertThat(testProduit.getNom()).isEqualTo(DEFAULT_NOM);
         assertThat(testProduit.getPrix()).isEqualTo(UPDATED_PRIX);
+        assertThat(testProduit.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
+        assertThat(testProduit.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testProduit.getEndDate()).isEqualTo(DEFAULT_END_DATE);
     }
 
     @Test
@@ -324,7 +368,13 @@ class ProduitResourceIT {
         Produit partialUpdatedProduit = new Produit();
         partialUpdatedProduit.setId(produit.getId());
 
-        partialUpdatedProduit.reference(UPDATED_REFERENCE).nom(UPDATED_NOM).prix(UPDATED_PRIX);
+        partialUpdatedProduit
+            .reference(UPDATED_REFERENCE)
+            .nom(UPDATED_NOM)
+            .prix(UPDATED_PRIX)
+            .createdDate(UPDATED_CREATED_DATE)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE);
 
         restProduitMockMvc
             .perform(
@@ -341,6 +391,9 @@ class ProduitResourceIT {
         assertThat(testProduit.getReference()).isEqualTo(UPDATED_REFERENCE);
         assertThat(testProduit.getNom()).isEqualTo(UPDATED_NOM);
         assertThat(testProduit.getPrix()).isEqualTo(UPDATED_PRIX);
+        assertThat(testProduit.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
+        assertThat(testProduit.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testProduit.getEndDate()).isEqualTo(UPDATED_END_DATE);
     }
 
     @Test

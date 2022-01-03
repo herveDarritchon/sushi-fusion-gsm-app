@@ -1,7 +1,9 @@
 package fr.hervedarritchon.app.sfgsm.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.hervedarritchon.app.sfgsm.domain.enumeration.ClientEnum;
 import java.io.Serializable;
+import java.time.LocalDate;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -21,7 +23,8 @@ public class Client implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "nom", nullable = false)
+    @Size(min = 5, max = 75)
+    @Column(name = "nom", length = 75, nullable = false)
     private String nom;
 
     @Column(name = "adresse")
@@ -31,9 +34,19 @@ public class Client implements Serializable {
     @Column(name = "type")
     private ClientEnum type;
 
+    @Column(name = "created_date")
+    private LocalDate createdDate;
+
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
+
+    @JsonIgnoreProperties(value = { "client" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
-    private Utilisateur vendeur;
+    private Utilisateur utilisateur;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -89,16 +102,55 @@ public class Client implements Serializable {
         this.type = type;
     }
 
-    public Utilisateur getVendeur() {
-        return this.vendeur;
+    public LocalDate getCreatedDate() {
+        return this.createdDate;
     }
 
-    public void setVendeur(Utilisateur utilisateur) {
-        this.vendeur = utilisateur;
+    public Client createdDate(LocalDate createdDate) {
+        this.setCreatedDate(createdDate);
+        return this;
     }
 
-    public Client vendeur(Utilisateur utilisateur) {
-        this.setVendeur(utilisateur);
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDate getStartDate() {
+        return this.startDate;
+    }
+
+    public Client startDate(LocalDate startDate) {
+        this.setStartDate(startDate);
+        return this;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return this.endDate;
+    }
+
+    public Client endDate(LocalDate endDate) {
+        this.setEndDate(endDate);
+        return this;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public Utilisateur getUtilisateur() {
+        return this.utilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Client utilisateur(Utilisateur utilisateur) {
+        this.setUtilisateur(utilisateur);
         return this;
     }
 
@@ -129,6 +181,9 @@ public class Client implements Serializable {
             ", nom='" + getNom() + "'" +
             ", adresse='" + getAdresse() + "'" +
             ", type='" + getType() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
             "}";
     }
 }

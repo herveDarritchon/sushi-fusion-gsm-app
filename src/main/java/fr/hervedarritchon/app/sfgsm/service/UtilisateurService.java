@@ -30,6 +30,12 @@ public interface UtilisateurService {
      * @return the list of entities.
      */
     List<UtilisateurDTO> findAll();
+    /**
+     * Get all the UtilisateurDTO where Client is {@code null}.
+     *
+     * @return the {@link List} of entities.
+     */
+    List<UtilisateurDTO> findAllWhereClientIsNull();
 
     /**
      * Get the "id" utilisateur.

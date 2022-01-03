@@ -2,6 +2,7 @@ package fr.hervedarritchon.app.sfgsm.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
@@ -26,8 +27,22 @@ public class Element implements Serializable {
     @Column(name = "nom", nullable = false)
     private String nom;
 
-    @OneToMany(mappedBy = "ingredient")
-    @JsonIgnoreProperties(value = { "ingredient" }, allowSetters = true)
+    @Column(name = "created_date")
+    private LocalDate createdDate;
+
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
+
+    @ManyToMany
+    @JoinTable(
+        name = "rel_element__produit",
+        joinColumns = @JoinColumn(name = "element_id"),
+        inverseJoinColumns = @JoinColumn(name = "produit_id")
+    )
+    @JsonIgnoreProperties(value = { "ingredients" }, allowSetters = true)
     private Set<Produit> produits = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -58,17 +73,50 @@ public class Element implements Serializable {
         this.nom = nom;
     }
 
+    public LocalDate getCreatedDate() {
+        return this.createdDate;
+    }
+
+    public Element createdDate(LocalDate createdDate) {
+        this.setCreatedDate(createdDate);
+        return this;
+    }
+
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDate getStartDate() {
+        return this.startDate;
+    }
+
+    public Element startDate(LocalDate startDate) {
+        this.setStartDate(startDate);
+        return this;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return this.endDate;
+    }
+
+    public Element endDate(LocalDate endDate) {
+        this.setEndDate(endDate);
+        return this;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
     public Set<Produit> getProduits() {
         return this.produits;
     }
 
     public void setProduits(Set<Produit> produits) {
-        if (this.produits != null) {
-            this.produits.forEach(i -> i.setIngredient(null));
-        }
-        if (produits != null) {
-            produits.forEach(i -> i.setIngredient(this));
-        }
         this.produits = produits;
     }
 
@@ -79,13 +127,13 @@ public class Element implements Serializable {
 
     public Element addProduit(Produit produit) {
         this.produits.add(produit);
-        produit.setIngredient(this);
+        produit.getIngredients().add(this);
         return this;
     }
 
     public Element removeProduit(Produit produit) {
         this.produits.remove(produit);
-        produit.setIngredient(null);
+        produit.getIngredients().remove(this);
         return this;
     }
 
@@ -114,6 +162,9 @@ public class Element implements Serializable {
         return "Element{" +
             "id=" + getId() +
             ", nom='" + getNom() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
             "}";
     }
 }
