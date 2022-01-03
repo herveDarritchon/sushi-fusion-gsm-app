@@ -22,7 +22,7 @@ entity Produit {
 }
 
 relationship ManyToMany {
-	Element{produit} to Produit{ingredient}
+	Element{produit} to Produit{element}
 }
 
 entity Element {
